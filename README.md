@@ -1,3 +1,7 @@
+**Author**: Guilherme Indiciate - AI Engineer – Full-Stack for Generative AI Applications
+**Delivered on**: January 8th, 2026
+
+---
 
 # 🤖 Technical Challenge – AI Engineer Junior
 
@@ -315,9 +319,3 @@ I would further improve routing robustness, expand testing and observability, an
 * [https://platform.openai.com/docs/guides/function-calling](https://platform.openai.com/docs/guides/function-calling)
 
 ---
-
-**Author**: Guilherme Indiciate
-**Created on**: January 7th, 2026
-**Role applied for**: AI Engineer – Full-Stack for Generative AI Applications
-**Context**: Technical Challenge | AI Engineer Junior Position
-
