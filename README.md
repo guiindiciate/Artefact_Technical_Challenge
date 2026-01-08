@@ -58,7 +58,7 @@ frontend/
 ### 1. Installation
 
 ```bash
-git clone <your-repository>
+git clone https://github.com/guiindiciate/Artefact_Technical_Challenge.git
 cd source/backend/src
 pip install -r requirements.txt
 ````
