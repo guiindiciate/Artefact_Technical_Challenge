@@ -1,0 +1,78 @@
+/* Top actions */
+.topBar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin: 12px 0 18px;
+}
+
+.session {
+  font-size: 12px;
+  color: #666;
+}
+
+.clearBtn {
+  background: #0a1128;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.05s ease;
+}
+
+.clearBtn:hover:not(:disabled) {
+  opacity: 0.92;
+}
+
+.clearBtn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.clearBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Input */
+.inputBar {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.input {
+  flex: 1;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #5f77ff;
+  box-shadow: 0 0 0 3px rgba(95, 119, 255, 0.18);
+}
+
+.sendBtn {
+  background: #5f77ff;
+  color: white;
+  border: none;
+  padding: 0 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.05s ease;
+}
+
+.sendBtn:hover:not(:disabled) {
+  opacity: 0.92;
+}
+
+.sendBtn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.sendBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

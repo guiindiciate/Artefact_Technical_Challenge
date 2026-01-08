@@ -1,0 +1,45 @@
+.container {
+  max-width: 820px;
+  margin: 40px auto;
+  padding: 24px 20px;
+  background: #f7f8fa;
+  border-radius: 20px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
+}
+
+/* Header (logo + title) */
+.topHeader {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.header {
+  color: #0a1128;
+  font-weight: 700;
+  font-size: 22px;
+  margin: 0;
+}
+
+.footerImage {
+  opacity: 0.9;
+  height: auto;
+}
+
+.subheader {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 520px) {
+  .header {
+    font-size: 18px;
+  }
+
+  .topHeader {
+    gap: 12px;
+  }
+}
