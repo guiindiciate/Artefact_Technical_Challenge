@@ -30,6 +30,7 @@ def should_continue(state: AgentState) -> str:
     """
     last = state["messages"][-1]
     if hasattr(last, "tool_calls") and last.tool_calls:
+        print("[GRAPH] Tool call detected -> routing to tools node")
         return "tools"
     return END
 
