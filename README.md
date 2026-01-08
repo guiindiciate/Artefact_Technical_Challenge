@@ -1,6 +1,6 @@
 ```
-**Author**: Guilherme Indiciate - AI Engineer – Full-Stack for Generative AI Applications
-**Delivered on**: January 8th, 2026
+Author: Guilherme Indiciate - AI Engineer – Full-Stack for Generative AI Applications
+Delivered on: January 8th, 2026
 ```
 
 ---
