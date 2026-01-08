@@ -43,3 +43,50 @@
     gap: 12px;
   }
 }
+
+
+.headerBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo {
+  opacity: 0.9;
+  height: auto;
+}
+
+.title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 22px;
+  color: #0a1128;
+}
+
+/* Right-side Artefact Button */
+.aboutBtn {
+  background: transparent;
+  border: 1px solid rgba(10, 17, 40, 0.2);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  color: #0a1128;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.05s ease;
+}
+
+.aboutBtn:hover {
+  background: rgba(10, 17, 40, 0.05);
+}
+
+.aboutBtn:active {
+  transform: translateY(1px);
+}

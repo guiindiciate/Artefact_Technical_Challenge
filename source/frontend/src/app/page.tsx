@@ -54,7 +54,7 @@ export default function Page() {
 
   return (
     <main className={layout.container}>
-      <Header title="Artefact Assistant | Data & AI to drive impact" />
+      <Header title="Assistant | Data & AI to drive impact" />
 
       <div className={controls.topBar}>
         <button
