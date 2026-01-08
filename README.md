@@ -16,7 +16,7 @@ The assistant supports **tool routing**, **multi-tool chaining**, **optional con
 
 ## 📁 Project Structure
 
-### Backend
+### **Backend**
 ```text
 backend/
 ├── src/
@@ -35,7 +35,7 @@ backend/
 └── requirements.txt             # Python dependencies
 ```
 
-### Frontend
+### **Frontend**
 ```text
 frontend/
 └── src/
@@ -71,9 +71,9 @@ pip install -r requirements.txt
 
 ### 2. Configuration
 
-Create a `.env` file with your OpenAI API key:
 
 ```bash
+# Create a `.env` file with your OpenAI API key:
 OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxxx
 ```
 
@@ -81,7 +81,7 @@ OPENAI_API_KEY=sk-proj-xxxxxxxxxxxxxx
 
 * Go to [https://platform.openai.com/api-keys](https://platform.openai.com/api-keys)
 * Create a new API key
-* Copy it into the `.env` file
+* Copy it into the `.env` file, using `OPENAI_API_KEY` variable
 
 ---
 
@@ -96,6 +96,12 @@ uvicorn main:app --port 8001 --reload
 ```bash
 # Navigate to the Frontend Directory
 cd source/frontend
+```
+
+
+```bash
+# Create a `.env.local` file and configure the backend API base URL
+NEXT_PUBLIC_API_BASE=http://localhost:8001
 ```
 
 ```bash
@@ -226,22 +232,56 @@ This makes agent behavior transparent, debuggable, and aligned with production-g
 
 ---
 
-## 📊 Examples
+## 🧠 Implementation Logic (Summary)
+
+* Built a **minimal, deterministic agent loop** using LangGraph
+* Used an **Agent (LLM) node** and a **Tools node**
+* Enabled **tool calling** via `bind_tools`, allowing the model to decide when to invoke external functions
+* Routed execution based on the presence of `tool_calls` in the LLM response
+* Continued looping until no further tool execution was required
+* Used **deterministic tools** for calculations and conversions to ensure accuracy and trust
+* Added **observability logs** to clearly show when tools are used
+* Implemented **memory as a thin wrapper**, without modifying the core execution graph
+
+### User Experience & Product Considerations
+
+Beyond the core technical requirements, several UX-oriented decisions were intentionally added to make the assistant feel closer to a real product:
+
+* Typing indicator while the LLM is processing, reducing perceived latency
+* Clear visibility of when external tools are used
+* Deterministic tool outputs for reliability and explainability
+* Optional conversational memory for natural multi-turn interactions
+
+> These small details improve usability while keeping the system simple and maintainable.
+
+### Conversational Memory (Optional Enhancement)
+
+Although **conversational memory was not a required feature** for this challenge, it was included as an optional enhancement to demonstrate how the assistant could evolve in a real-world scenario.
+
+To keep the core solution aligned with the challenge scope:
+
+* The **LangGraph execution graph remains stateless**
+* Memory is implemented as a **thin wrapper (`AssistantWithMemory`)**
+* The same graph can be reused in **single-shot** or **conversational** modes
+
+> This preserves clarity and extensibility without increasing system complexity.
+
+#### Examples
 
 ```python
->>> run_assistant("What does Artefact do in a few words?")
+>>> chat("What does Artefact do in a few words?")
 "Artefact is a data and digital consulting company that helps organizations
 accelerate AI and data adoption to drive business impact."
 
->>> run_assistant("How much is 0.1 BTC in BRL?")
+>>> chat("How much is 0.1 BTC in BRL?")
 "[TOOL] Using CRYPTO Converter (CoinGecko)"
 "🤖 Artefact Assistant: 0.1 BTC is approximately 49,031.40 BRL."
 
->>> run_assistant("How much is 1 USD in BRL?")
+>>> chat("How much is 1 USD in BRL?")
 "[TOOL] Using FX CONVERTER"
 "🤖 Artefact Assistant: 1 USD is approximately 5.39 BRL."
 
->>> run_assistant("Using the current BTC price in BRL and the USD/BRL exchange rate, what is the price of 0.1 BTC in USD?")
+>>> chat("Using the current BTC price in BRL and the USD/BRL exchange rate, what is the price of 0.1 BTC in USD?")
 "[TOOL] Using CRYPTO CONVERTER (CoinGecko)"
 "[TOOL] Using FX CONVERTER"
 "[TOOL] Using local CALCULATOR"
@@ -253,53 +293,16 @@ The assistant retrieves external data, performs deterministic calculations, and 
 
 ---
 
-## 🧠 Implementation Logic (Summary)
-
-* Built a **minimal, deterministic agent loop** using LangGraph
-* Used an **Agent (LLM) node** and a **Tools node**
-* Enabled **tool calling** via `bind_tools`
-* Routed execution based on the presence of `tool_calls`
-* Continued looping until no tool was required
-* Used **deterministic tools** for calculations and conversions to ensure correctness and trust
-* Added **observability logs** to clearly show when tools are used
-* Implemented **memory as a thin wrapper**, without modifying the core graph
-
----
-
-## ✨ User Experience & Product Considerations
-
-Beyond the core technical requirements, several UX-oriented decisions were intentionally added to make the assistant feel closer to a real product:
-
-* Typing indicator while the LLM is processing, reducing perceived latency
-* Clear visibility of when external tools are used
-* Deterministic tool outputs for reliability and explainability
-* Optional conversational memory for natural multi-turn interactions
-
-These small details improve usability while keeping the system simple and maintainable.
-
----
-
-## 🚀 Conversational Memory (Optional Enhancement)
-
-Although **conversational memory was not a required feature** for this challenge, it was included as an optional enhancement to demonstrate how the assistant could evolve in a real-world scenario.
-
-To keep the core solution aligned with the challenge scope:
-
-* The **LangGraph execution graph remains stateless**
-* Memory is implemented as a **thin wrapper (`AssistantWithMemory`)**
-* The same graph can be reused in **single-shot** or **conversational** modes
-
-This preserves clarity and extensibility without increasing system complexity.
-
----
-
 ## 🧠 Learnings & Next Steps
 
 **What I learned**
-This project deepened my understanding of how to orchestrate LLMs with tools using execution graphs, and how small decisions around state and routing significantly impact clarity, reliability, and scalability.
+<br>
+This project strengthened my understanding of how to orchestrate LLMs with external tools using execution graphs, and how thoughtful decisions around state management and routing directly impact an assistant’s clarity, reliability, and scalability.
 
 **What I’d do with more time**
-I would further improve routing robustness, expand testing and observability, and refine long-term memory handling for extended conversations.
+<br>
+With additional time, I would focus on making routing more robust, expanding test coverage and observability, and improving how conversational memory is managed over longer sessions.
+In particular, I would introduce memory pruning strategies (such as limiting context length or summarizing earlier interactions) to control token usage and costs while preserving relevant context.
 
 ---
 
