@@ -151,6 +151,7 @@ Now, you can open the application in `https://localhost:3000/`
       └────────────────────────┘
 ```
 
+<br>
 
 ## 🧩 Core Components
 
@@ -171,15 +172,21 @@ Each tool explicitly reports when it is used, enabling clear observability of ro
 
 ---
 
+### `./llm/llm_call.py`
+
+LLM invocation layer with tool binding.
+
+* **`call_model(state: AgentState) -> dict`**
+  Invokes the language model (`ChatOpenAI`) with tool calling enabled.
+  The function binds all available tools (`calculator`, `fx_convert`, `crypto_convert`) to the model, sends the current message history, and returns the LLM response wrapped in the expected graph state format.
+
+This component keeps model invocation logic isolated from graph orchestration, making it easy to swap models, adjust parameters, or extend tool bindings without impacting the execution flow.
+
+---
+
 ### `./graph/`
 
 Defines the **LangGraph execution graph** and the agent control flow.
-
-* `AgentState`
-  Typed state object that holds the full message history across nodes.
-
-* `call_model()`
-  Invokes the LLM with tool binding enabled, allowing the model to decide whether a tool is required.
 
 * `should_continue()`
   Conditional routing logic that checks for `tool_calls` and decides whether to:
@@ -196,11 +203,15 @@ Defines the **LangGraph execution graph** and the agent control flow.
 
 High-level assistant interface layer.
 
-* `AssistantWithMemory`
-  Wraps the execution graph with conversational memory, enabling multi-turn interactions while keeping the graph itself stateless.
+* **`AssistantWithMemory`**
+  A thin wrapper around the compiled LangGraph workflow that maintains an in-memory `conversation_history` per instance.
+  On each turn, it appends the new `HumanMessage`, runs the graph with the full history, stores the updated message list, and returns the latest `AIMessage`.
 
-* `run_assistant()`
-  Stateless, single-shot compatibility function that runs the assistant without memory (useful for scripts, tests, or demos).
+* **`chat(query: str) -> str`**
+  Main entry point for multi-turn interactions. Sends the full conversation context into the graph and returns the assistant’s latest reply.
+
+* **`clear_history() -> None`**
+  Resets the conversation context for a fresh session.
 
 ---
 
@@ -221,7 +232,6 @@ This makes agent behavior transparent, debuggable, and aligned with production-g
 1. **User submits a question** -> converted to a `HumanMessage`
 2. **Agent node (LLM)** analyzes the context
 3. **Routing decision**:
-
    * Math-related -> calls `calculator`
    * Currency conversion -> calls `fx_convert`
    * Crypto price/conversion -> calls `crypto_convert`
@@ -232,7 +242,7 @@ This makes agent behavior transparent, debuggable, and aligned with production-g
 
 ---
 
-## 🧠 Implementation Logic (Summary)
+## 🧠 Implementation Logic
 
 * Built a **minimal, deterministic agent loop** using LangGraph
 * Used an **Agent (LLM) node** and a **Tools node**
@@ -243,18 +253,18 @@ This makes agent behavior transparent, debuggable, and aligned with production-g
 * Added **observability logs** to clearly show when tools are used
 * Implemented **memory as a thin wrapper**, without modifying the core execution graph
 
-### User Experience & Product Considerations
+### **User Experience & Product Considerations**
 
 Beyond the core technical requirements, several UX-oriented decisions were intentionally added to make the assistant feel closer to a real product:
 
-* Typing indicator while the LLM is processing, reducing perceived latency
-* Clear visibility of when external tools are used
+* Typing indicator while the LLM is processing (Frontend), reducing perceived latency
+* Clear visibility in logs of when external tools are used
 * Deterministic tool outputs for reliability and explainability
 * Optional conversational memory for natural multi-turn interactions
 
 > These small details improve usability while keeping the system simple and maintainable.
 
-### Conversational Memory (Optional Enhancement)
+### **Conversational Memory (Optional Enhancement)**
 
 Although **conversational memory was not a required feature** for this challenge, it was included as an optional enhancement to demonstrate how the assistant could evolve in a real-world scenario.
 
@@ -266,7 +276,7 @@ To keep the core solution aligned with the challenge scope:
 
 > This preserves clarity and extensibility without increasing system complexity.
 
-#### Examples
+#### **Examples**
 
 ```python
 >>> chat("What does Artefact do in a few words?")
